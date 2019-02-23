@@ -1,0 +1,8 @@
+{
+  //Database connect info
+  dbhost: 'localhost',
+  dbport: '3306',
+  dbuser: 'user',
+  dbpass: ''
+
+}
