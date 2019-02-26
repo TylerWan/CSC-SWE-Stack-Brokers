@@ -17,7 +17,6 @@ exports.connectdb = function(){
     connection.connect(function(err) {
         if (err) {
             console.error('X Database connection failed: ' + err.stack);
-            return;
         }else
         console.log('✓ Connected to MySQL.');
 
@@ -41,6 +40,13 @@ exports.connectdb = function(){
     });
     //connection.end();
 };
-
+exports.grabtable = function(tableName, res){
+    var statement = "SELECT * FROM " + tableName;
+    connection.query(statement, function(err, results) {
+        if (err)
+            throw err;
+        res.send(results);
+    });
+};
 
 
