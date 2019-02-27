@@ -1,6 +1,9 @@
 const fs = require('fs');
 const JSON5 = require('json5');
 const mysql = require('mysql');
+const info = require('../stockconfig/info.json');
+const parser = require('../stock_modules/stocktools');
+const si = require('stock-info');
 //Read config file
 const configinfo = JSON5.parse(fs.readFileSync('./stockconfig/config', 'utf8'));
 const dbhost = configinfo.dbhost.toString(), dbuser=configinfo.dbuser.toString(), dbpass=configinfo.dbpass.toString(), dbport=configinfo.dbport.toString();
@@ -19,7 +22,6 @@ exports.connectdb = function(){
             console.error('X Database connection failed: ' + err.stack);
         }else
         console.log('✓ Connected to MySQL.');
-
     });
 
     connection.query("CREATE DATABASE IF NOT EXISTS StackBrokersDB;", function (err, result){
@@ -37,16 +39,66 @@ exports.connectdb = function(){
         if (err) throw err;
         else
             console.log("✓ Article Table");
+
+        //Place stock updating at last DB connection process
+        updateStocks();
     });
+
+
     //connection.end();
 };
 exports.grabtable = function(tableName, res){
-    var statement = "SELECT * FROM " + tableName;
+    let statement = "SELECT * FROM " + tableName;
     connection.query(statement, function(err, results) {
         if (err)
             throw err;
         res.send(results);
     });
 };
+exports.grabStockInfo = function(tableName, ticker, res){
+    let statement = "SELECT * FROM "+tableName+" WHERE ticker='" + ticker +"';";
+    connection.query(statement, function(err, results) {
+        if (err)
+            throw err;
+        if (results.toString()==''){
+            res.send("Stock not found");
+            return;
+        }
+        res.send(results);
+    });
+};
+function updateStocks(){
+    let CurrentDate = new Date();
+    CurrentDate = parser.parseDate(CurrentDate);
 
+    if(!(info.LastQueried<CurrentDate)){
+        console.log("Stocks up to date");
+    }else{
+        info.LastQueried=CurrentDate;
+        //let state = "ALTER TABLE stocktable ADD d"+CurrentDate+" INT";
+       // connection.query(state);
+        let stocklist = info.TechStocks;
+
+        si.getStocksInfo(stocklist).then(
+            stocklist => {
+                for (stock in stocklist) {
+
+                console.log(stocklist[stock].shortName);
+                console.log(stocklist[stock].symbol);
+                connection.query('UPDATE stocktable SET stockcurrent = '+stocklist[stock].regularMarketPrice+', '+'d'+CurrentDate+'= '+stocklist[stock].regularMarketPrice+' WHERE TICKER = "'+stocklist[stock].symbol+'";');
+              // connection.query('INSERT INTO stocktable (ticker, name, industry, stockcurrent, projected, '+'d'+CurrentDate+') VALUES ("'+stocklist[stock].symbol+'", "'+stocklist[stock].shortName+'", "TECH", '+stocklist[stock].regularMarketPrice+', -0.5,'+stocklist[stock].regularMarketPrice+');');
+            }
+
+            })
+            .catch(error => {console.log("Error when updating")});
+
+
+        }
+
+
+};
+
+exports.updateStocks = function updateStocks(){
+    updateStocks();
+};
 
