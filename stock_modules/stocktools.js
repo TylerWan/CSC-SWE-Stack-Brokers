@@ -20,5 +20,5 @@ exports.parseDate = function(date){
         day = '0'+day;
 
     let result = year.toString()+month.toString()+day.toString();
-    return result;
+    return 'd'+result;
 };

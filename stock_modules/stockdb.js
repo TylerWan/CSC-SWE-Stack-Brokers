@@ -30,18 +30,46 @@ exports.connectdb = function(){
             console.log("✓ Database");
     });
     connection.query("USE StackBrokersDB;");
-    connection.query("CREATE TABLE IF NOT EXISTS StockTable(ticker VARCHAR(10) PRIMARY KEY, name VARCHAR(24), industry VARCHAR(16), stockcurrent FLOAT, projected FLOAT);", function (err, result){
+    connection.query("CREATE TABLE IF NOT EXISTS StockTable(ticker VARCHAR(10) PRIMARY KEY, name VARCHAR(35), industry VARCHAR(16), stockcurrent FLOAT, projected FLOAT);", function (err, result){
         if (err) throw err;
         else
             console.log("✓ Stock Table");
     });
     connection.query("CREATE TABLE IF NOT EXISTS ArticleTable(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, ticker VARCHAR(10), time INT, title VARCHAR(100), URL VARCHAR(200), sentiment FLOAT, FOREIGN KEY (ticker) REFERENCES StockTable(ticker));", function (err, result){
         if (err) throw err;
-        else
+        else {
             console.log("✓ Article Table");
+            //Place stock updating at last DB connection process
+           //
+            let CurrentDate = new Date();
+            CurrentDate = parser.parseDate(CurrentDate);
+            var sql = "SHOW COLUMNS FROM stocktable LIKE '"+CurrentDate+"';";
+            connection.query(sql, function (err, result) {
+                if (err) throw err;
+                console.log((result.length==0) ? "Creating Stocks...":"Updating Stocks...");
 
-        //Place stock updating at last DB connection process
-        updateStocks();
+                let stocklist = info.TechStocks;
+                if(result.length==0){
+                    //Day col doesn't exist, create one
+                    connection.query("ALTER TABLE stocktable ADD "+CurrentDate+" INT;");
+                    si.getStocksInfo(stocklist).then(
+                        stocklist => {
+                            for (stock in stocklist) {
+                                connection.query('INSERT INTO stocktable (ticker, name, industry, stockcurrent, projected, ' +  CurrentDate + ') VALUES ("' + stocklist[stock].symbol + '", "' + stocklist[stock].shortName + '", "TECH", ' + stocklist[stock].regularMarketPrice + ', -0.5,' + stocklist[stock].regularMarketPrice + ');');
+                            }
+
+                        })
+                        .catch(error => {
+                            console.log("Error when updating "+error)
+                        });
+                    updateStocks();
+                }else{
+                    //Day col exists, update
+                    updateStocks();
+                }
+            });
+
+        }
     });
 
 
@@ -67,36 +95,24 @@ exports.grabStockInfo = function(tableName, ticker, res){
         res.send(results);
     });
 };
+
 function updateStocks(){
     let CurrentDate = new Date();
     CurrentDate = parser.parseDate(CurrentDate);
-
-    if(!(info.LastQueried<CurrentDate)){
-        console.log("Stocks up to date");
-    }else{
-        info.LastQueried=CurrentDate;
-        //let state = "ALTER TABLE stocktable ADD d"+CurrentDate+" INT";
-       // connection.query(state);
         let stocklist = info.TechStocks;
 
         si.getStocksInfo(stocklist).then(
             stocklist => {
                 for (stock in stocklist) {
 
-                console.log(stocklist[stock].shortName);
-                console.log(stocklist[stock].symbol);
-                connection.query('UPDATE stocktable SET stockcurrent = '+stocklist[stock].regularMarketPrice+', '+'d'+CurrentDate+'= '+stocklist[stock].regularMarketPrice+' WHERE TICKER = "'+stocklist[stock].symbol+'";');
-              // connection.query('INSERT INTO stocktable (ticker, name, industry, stockcurrent, projected, '+'d'+CurrentDate+') VALUES ("'+stocklist[stock].symbol+'", "'+stocklist[stock].shortName+'", "TECH", '+stocklist[stock].regularMarketPrice+', -0.5,'+stocklist[stock].regularMarketPrice+');');
+                console.log("Updating "+stocklist[stock].shortName+" : "+stocklist[stock].symbol);
+                connection.query('UPDATE stocktable SET stockcurrent = '+stocklist[stock].regularMarketPrice+', '+CurrentDate+'= '+stocklist[stock].regularMarketPrice+' WHERE TICKER = "'+stocklist[stock].symbol+'";');
             }
 
             })
-            .catch(error => {console.log("Error when updating")});
+            .catch(error => {console.log("Error when updating: "+error)});
 
-
-        }
-
-
-};
+}
 
 exports.updateStocks = function updateStocks(){
     updateStocks();
