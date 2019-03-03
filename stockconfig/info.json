@@ -1,11 +1,12 @@
 {
-  "LastQueried": 20190226,
   "TechStocks": [
     "AMZN",
     "AAPL",
     "MSFT",
     "INTC",
     "AMD",
-    "NVDA"
+    "NVDA",
+    "SNE",
+    "TSLA"
   ]
 }

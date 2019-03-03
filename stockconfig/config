@@ -4,5 +4,4 @@
   dbport: '3306',
   dbuser: 'user',
   dbpass: ''
-
 }

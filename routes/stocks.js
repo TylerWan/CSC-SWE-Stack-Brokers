@@ -1,16 +1,20 @@
-var express = require('express');
-var router = express.Router();
-const stockdatabase = require('../stock_modules/stockdb');
+const express = require('express');
+const router = express.Router();
 const tools = require('../stock_modules/stocktools');
 
 router.get('/', function(req, res, next) {
-    stockdatabase.grabtable('stocktable', res);
+    tools.showstocks(res);
 });
-router.get('/:stockid', function(req, res) {
-    stockdatabase.grabStockInfo('stocktable', req.params.stockid, res);
-});
+
 router.get('/:stockid/realtime', function(req, res) {
     tools.showraw(res, req.params.stockid);
 });
 
+router.get('/top', function(req, res, next) {
+    tools.showtop(res);
+});
+
+router.get('/bottom', function(req, res, next) {
+    tools.showbottom(res);
+});
 module.exports = router;

@@ -1,18 +1,19 @@
 {
-  "name": "stackbrokers",
-  "version": "0.0.1",
+  "name": "awsstack",
+  "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "aws-sdk": "latest",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "ejs": "latest",
     "express": "~4.16.0",
     "json5": "^2.1.0",
     "morgan": "~1.9.0",
-    "mysql": "~8.0.13",
-    "socket.io": "^2.2.0",
-    "stock-data.js": "^1.2.0"
+    "mysql": "^2.16.0",
+    "stock-info": "^1.1.0"
   }
 }
