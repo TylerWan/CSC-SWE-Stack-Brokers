@@ -1,8 +1,148 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
+  background-image: url(background.png);
+    
+  }
+  .myTableStyle{
+    padding-top: 8px;
+  }
+  .mytable{
+    background-color:gray;
+    margin-left: auto;
+    margin-right: auto;
+  }
+   tr{
+     background-color:darkgray;
+      padding:20px;
+  
+    }
+  td{
+      padding:10px 15px;
+    }
+  .container{
+    background-image: url(background-container.png);
+    width: 1050px;
+    height: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2px;
+  }
+  .insideContainer{
+    
+    text-align: center;
+    background-color: #fff;
+    width: 1000px;
+    height: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+.homeButton{
+  color: rgb(0, 0, 0);
+  font-family: "proxima nova";
+  font-weight: 100;
+  font-size: 15px;
+  
+  padding: 10px 8px;
+  text-decoration: none;
 
-a {
-  color: #00B7FF;
+}
+.homeButton:hover{
+
+    background-color: rgb(27, 45, 70);
+    color: #fff; 
+    
+}
+.PredictionButton{
+  color: rgb(0, 0, 0);
+  font-family: "proxima nova";
+  font-weight: 100;
+  font-size: 15px;
+  text-decoration: none;
+  padding: 10px 8px;
+}
+.PredictionButton:hover{
+  background-color:  rgb(27, 45, 70);
+  color: #fff; 
+}
+.PopularStocksButton{
+  color: rgb(0, 0, 0);
+  font-family: "proxima nova";
+  font-weight: 100;
+  font-size: 15px;
+  text-decoration: none;
+  padding: 10px 8px;
+}
+.PopularStocksButton:hover{
+  background-color:  rgb(27, 45, 70);
+  color: #fff; 
+}
+.BrowseIndButton{
+  color: rgb(0, 0, 0);
+  font-family: "proxima nova";
+  font-weight: 100;
+  font-size: 15px;
+  text-decoration: none;
+  padding: 10px 8px;
+}
+.BrowseIndButton:hover{
+  background-color:  rgb(27, 45, 70);
+  color: #fff; 
+}
+.NewsButton{
+  color: rgb(0, 0, 0);
+  font-family: "proxima nova";
+  font-weight: 100;
+  font-size: 15px;
+  text-decoration: none;
+  padding: 10px 8px;
+}
+.NewsButton:hover{
+  background-color:  rgb(27, 45, 70);
+  color: #fff; 
+}
+.Message{
+  float: left;
+  width: 600px;
+  padding: 5px;
+  border: 2px;
+  height: 100px;
+  padding-top: 20px;
+  padding-block-end: 20px;
+}
+.SearchBarName{
+  font-family: "proxima nova";
+  font-weight: 100;
+  font-size: 24px;
+  width: 400;
+  text-align: left;
+  padding: 30px 0;
+}
+.SearchBar{
+  text-align: left;
+  height: 100px;
+  
+}
+.search{
+  
+  width: 280px;
+  
+}
+.content{
+  padding-right: 10px;
+  padding-left: 10px;
+  text-align: center;
+}
+.generalPurpose{
+  padding-right: 10px;
+  padding-left: 10px;
+}
+.footer{
+  color: #fff;
+  text-align: left;
+  padding-top: 30px;
+  margin-left: 27px;
+}
+.floatLeft{
+  float: left;
+  width: 300px;
+  height: 200px;
 }
