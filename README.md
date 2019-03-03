@@ -20,3 +20,4 @@ To view stock information:
 - /api/stocks = shows all DB stocks
 - /api/stocks/[stockticker] = shows certain DB stock info
 - /api/stocks/[stockticker]/realtime = shows API lookup for stock
+- /api/stocks/(bottom/top) = shows top or bottom 5 stocks in the database
