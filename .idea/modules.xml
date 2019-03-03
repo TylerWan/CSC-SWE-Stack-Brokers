@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/StackBrokers.iml" filepath="$PROJECT_DIR$/.idea/StackBrokers.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/AWSStack.iml" filepath="$PROJECT_DIR$/.idea/AWSStack.iml" />
     </modules>
   </component>
 </project>
