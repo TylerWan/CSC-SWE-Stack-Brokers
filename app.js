@@ -8,7 +8,7 @@ const stockRouter = require('./routes/stocks');
 
 
 const app = express();
-
+app.use(express.static('pages'));
 
 app.use(logger('dev'));
 app.use(express.json());

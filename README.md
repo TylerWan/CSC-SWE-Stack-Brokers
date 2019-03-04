@@ -15,9 +15,5 @@ node bin\www
 ```
 
 ## API
-
-To view stock information:
-- /api/stocks = shows all DB stocks
-- /api/stocks/[stockticker] = shows certain DB stock info
-- /api/stocks/[stockticker]/realtime = shows API lookup for stock
-- /api/stocks/(bottom/top) = shows top or bottom 5 stocks in the database
+To access objects contained in the stock database containing specific stock info, you may go to ' api/stocks', or ' api/stocks/[ticker]' for a certain stock.
+To access objects contained in the article database containing specific article info, you may go to ' api/articles', or ' api/articles/stock/[ticker]' for a certain stock.

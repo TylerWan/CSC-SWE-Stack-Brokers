@@ -13,6 +13,10 @@ exports.showraw = function(res, stockid) {
 
 };
 
+exports.showstock = function(ticker, res){
+    database.showStock(ticker, res);
+};
+
 exports.showstocks = function(res){
     database.showCurrentStockTable(res);
 };
