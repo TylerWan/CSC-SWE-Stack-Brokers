@@ -1,0 +1,50 @@
+<html>
+<script src='index.js'></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<link rel="stylesheet" href="./stylesheets/style.css"/>
+<head>
+  <title>Popular Stocks</title>
+</head>
+
+<body>
+<div id="container" class="container">
+ <div id="insideContainer" class="insideContainer">
+  <div id="title1" class="title1">
+  Worst Stocks
+  <p></p>
+</div>
+
+<div ng-app="myApp" ng-controller="myCtrl" class="myTableStyle">
+  <table class="mytable">
+    <tr class="myrow">
+      <td class="label">Ticker</td>
+      <td class="label">Name</td>
+      <td class="label">Industry</td>
+      <td class="label">Current Stock</td>
+      <td class="label">Projected</td>
+      
+    </tr>
+    <tr ng-repeat="x in stocks" class="myrow">
+      <td class="ele">{{x.ticker}}</td>
+      <td class="ele">{{x.fullName}}</td>
+      <td class="ele">{{x.industry}}</td>
+      <td class="ele">{{x.currentprice}}</td>
+      <td class="ele">{{x.projected}}</td>  
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+<script>
+
+var app = angular.module('myApp', []);
+    app.controller('myCtrl', function($scope, $http) {
+        $http.get("/api/stocks/bottom") //call for worst stocks
+            .then(function(response) {
+                $scope.stocks = response.data;
+            });   
+    });
+</script>
+</div>
+</div>
+</html>
