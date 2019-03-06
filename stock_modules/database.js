@@ -82,9 +82,11 @@ function updateDB() {
                            let stocks = stocksinConfig[Category];
                            si.getStocksInfo(stocks).then(
                                stocks =>{
-                                   for(x in stocks)
-                                        con.query("UPDATE "+stocktableName+" SET currentprice = "+stocks[x].regularMarketPrice+" WHERE ticker = '"+stocks[x].symbol+"'");
-                                        con.query("UPDATE "+stocktableName+" SET "+daycolumnname()+"= "+stocks[x].regularMarketPrice+" WHERE ticker = '"+stocks[x].symbol+"'");
+
+                                   for(let c=0;c<stocks.length;c++) {
+                                       con.query("UPDATE " + stocktableName + " SET currentprice = " + stocks[c].regularMarketPrice + " WHERE ticker = '" + stocks[c].symbol + "'");
+                                       con.query("UPDATE " + stocktableName + " SET " + daycolumnname() + "= " + stocks[c].regularMarketPrice + " WHERE ticker = '" + stocks[c].symbol + "'");
+                                   }
                                })
                                .catch(error => {console.log(error)});
 
