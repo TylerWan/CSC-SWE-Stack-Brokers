@@ -1,5 +1,5 @@
 {
-  "TechStocks": [
+  "Tech": [
     "AMZN",
     "AAPL",
     "MSFT",
@@ -8,5 +8,42 @@
     "NVDA",
     "SNE",
     "TSLA"
+  ],
+  "Health": [
+    "CVS",
+    "WBA",
+    "JNJ",
+    "MCK",
+    "ANTM",
+    "CNC",
+    "ALGN"
+  ],
+  "Food": [
+    "MCD",
+    "YUM",
+    "KHC",
+    "NSRGY",
+    "SFM",
+    "K",
+    "CMG",
+    "KO",
+    "SYY"
+  ],
+  "Finance": [
+    "JPM",
+    "BAC",
+    "WFC",
+    "STI",
+    "COF",
+    "AXP"
+  ],
+  "Energy": [
+    "XOM",
+    "SO",
+    "BP",
+    "COP",
+    "NI",
+    "BHGE",
+    "EXC"
   ]
 }
