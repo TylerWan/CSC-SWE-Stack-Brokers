@@ -84,7 +84,7 @@ function updateDB() {
                                stocks =>{
 
                                    for(let c=0;c<stocks.length;c++) {
-                                       con.query("UPDATE " + stocktableName + " SET currentprice = " + stocks[c].regularMarketPrice + " WHERE ticker = '" + stocks[c].symbol + "'");
+                                       con.query("UPDATE " + stocktableName + " SET currentprice = " + stocks[c].regularMarketPrice + ", projected = "+stocks[c].fiftyDayAverageChangePercent+" WHERE ticker = '" + stocks[c].symbol + "'");
                                        con.query("UPDATE " + stocktableName + " SET " + daycolumnname() + "= " + stocks[c].regularMarketPrice + " WHERE ticker = '" + stocks[c].symbol + "'");
                                    }
                                })
@@ -107,7 +107,7 @@ function addStockToTable(ticker, industryName){
         stocks => {
             for (x in stocks) {
                 con.query("INSERT INTO "+stocktableName+" (ticker, fullName, industry, currentprice, projected) VALUES ('"+stocks[x].symbol+"', \""+stocks[x].shortName+
-                    "\", '"+industryName+"', "+stocks[x].regularMarketPrice+", 1);");
+                    "\", '"+industryName+"', "+stocks[x].regularMarketPrice+", "+stocks[x].fiftyDayAverageChangePercent+");");
             }
         })
         .catch(error => {console.log(error)});
@@ -118,7 +118,7 @@ exports.updateDB = function(){
 };
 const bestworstcount = 15;
 exports.showTop = function(res){
-    con.query("SELECT * FROM "+stocktableName +" ORDER BY currentprice DESC limit "+bestworstcount, function(error, result, field) {
+    con.query("SELECT * FROM "+stocktableName +" ORDER BY projected DESC limit "+bestworstcount, function(error, result, field) {
         if (error) throw error;
         res.send(result);
 
@@ -126,7 +126,7 @@ exports.showTop = function(res){
 };
 
 exports.showBottom = function(res){
-    con.query("SELECT * FROM "+stocktableName +" ORDER BY currentprice ASC limit "+bestworstcount, function(error, result, field) {
+    con.query("SELECT * FROM "+stocktableName +" ORDER BY projected ASC limit "+bestworstcount, function(error, result, field) {
         if (error) throw error;
         res.send(result);
 
@@ -140,7 +140,13 @@ exports.showCurrentStockTable = function(res){
 
     });
 };
+exports.showIndustry = function(res, industry){
+    con.query("SELECT * FROM "+stocktableName+" WHERE industry = '"+industry+"'", function(error, result, field) {
+        if (error) throw error;
+        res.send(result);
 
+    });
+};
 exports.showStock = function(ticker, res){
     con.query("SELECT * FROM "+stocktableName+" WHERE ticker = '"+ticker+"'", function(error, result, field) {
         if (error) throw error;

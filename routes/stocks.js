@@ -14,7 +14,9 @@ router.get('/bottom', function(req, res, next) {
 router.get('/:stockid', function(req, res) {
     tools.showstock(req.params.stockid, res);
 });
-
+router.get('/industry/:industry', function(req, res) {
+    tools.showindustry(req.params.industry, res);
+});
 router.get('/:stockid/realtime', function(req, res) {
     tools.showraw(res, req.params.stockid);
 });
