@@ -1,5 +1,6 @@
 const si = require('stock-info');
 const database = require('./database');
+const schedule = require('node-cron');
 
 exports.showraw = function(res, stockid) {
     let stocks = [stockid];
@@ -21,22 +22,22 @@ exports.showstocks = function(res){
     database.showCurrentStockTable(res);
 };
 
+exports.showstock = function(ticker, res){
+    database.showStock(ticker, res);
+};
 exports.showtop = function(res){
     database.showTop(res);
 };
-
+exports.showindustry = function(industry, res){
+    database.showIndustry(res,industry);
+};
 exports.showbottom=function(res){
   database.showBottom(res);
 };
-exports.daycolumnname= function(){
-    let date = new Date();
-    let month = date.getMonth()+1;
-    if(month<10)
-        month = '0' + month;
-    let day = date.getDate();
-    if(day<10)
-        day = '0' + day;
-    return 'd' + date.getFullYear()+month+day;
 
-
+//Schedule stock DB updates every half hour from 03:00-20:30
+exports.autoUpdate = function(){
+    const updateSchedule = schedule.schedule('0,30 3-20 * * *', function(){
+        database.updateDB();
+    });
 };

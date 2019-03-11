@@ -7,6 +7,7 @@ You will need to install necessarily modules by running the following
 ```
 npm install mysql
 npm install --save stock-info
+npm install node-schedule
 ```
 
 To run the nodejs application through terminal, navigate to the project file and run the following
