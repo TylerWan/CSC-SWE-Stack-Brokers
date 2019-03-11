@@ -84,7 +84,7 @@ function updateDB() {
                                stocks =>{
 
                                    for(let c=0;c<stocks.length;c++) {
-                                       con.query("UPDATE " + stocktableName + " SET currentprice = " + stocks[c].regularMarketPrice + " WHERE ticker = '" + stocks[c].symbol + "'");
+                                       con.query("UPDATE " + stocktableName + " SET currentprice = " + stocks[c].regularMarketPrice + ", projected = "+stocks[c].fiftyDayAverageChangePercent+" WHERE ticker = '" + stocks[c].symbol + "'");
                                        con.query("UPDATE " + stocktableName + " SET " + daycolumnname() + "= " + stocks[c].regularMarketPrice + " WHERE ticker = '" + stocks[c].symbol + "'");
                                    }
                                })
@@ -140,7 +140,13 @@ exports.showCurrentStockTable = function(res){
 
     });
 };
+exports.showIndustry = function(res, industry){
+    con.query("SELECT * FROM "+stocktableName+" WHERE industry = '"+industry+"'", function(error, result, field) {
+        if (error) throw error;
+        res.send(result);
 
+    });
+};
 exports.showStock = function(ticker, res){
     con.query("SELECT * FROM "+stocktableName+" WHERE ticker = '"+ticker+"'", function(error, result, field) {
         if (error) throw error;

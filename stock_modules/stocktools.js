@@ -24,7 +24,9 @@ exports.showstock = function(ticker, res){
 exports.showtop = function(res){
     database.showTop(res);
 };
-
+exports.showindustry = function(industry, res){
+    database.showIndustry(res,industry);
+};
 exports.showbottom=function(res){
   database.showBottom(res);
 };
