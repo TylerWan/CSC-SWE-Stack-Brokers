@@ -21,4 +21,11 @@ router.get('/:stockid/realtime', function(req, res) {
     tools.showraw(res, req.params.stockid);
 });
 
+router.get('/top', function(req, res, next) {
+    tools.showtop(res);
+});
+router.get('/test', function(req, res, next) {
+    console.log("text");
+});
+
 module.exports = router;

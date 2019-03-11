@@ -42,6 +42,7 @@ exports.connecttoDB = function(){
     //con.end();
 
 };
+
 function updateDB() {
 
     //Create DB / Use DB space
@@ -132,7 +133,14 @@ exports.showBottom = function(res){
 
     });
 };
+exports.showStock = function(ticker, res){
+    con.query("SELECT * FROM "+stocktableName+" WHERE ticker = '"+ticker+"'", function(error, result, field) {
+        if (error)
+            throw error;
+        res.send(result);
 
+    });
+};
 exports.showCurrentStockTable = function(res){
     con.query("SELECT * FROM "+stocktableName, function(error, result, field) {
         if (error) throw error;
