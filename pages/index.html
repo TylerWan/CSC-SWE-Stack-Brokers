@@ -100,22 +100,18 @@
          alert("Please Enter A Valid Ticker");
      }
    }
-       var input = document.getElementById("searchBar");
-       input.addEventListener("keyup", function(event){
-           if(event.keyCode == 13){
-               event.preventDefault();
-               document.getElementById("submit").click();
-           }
-       });
+       
       </script>
         <script>
              var app = angular.module('myApp', []);
                    app.controller('myCtrl', function($scope, $http) {
                      $scope.getInfo = function (input){
+                      if($scope.input != null && $scope.input !== ""){
                       $http.get('api/stocks/' + $scope.input)
                    .then(function(response) {
                        $scope.stocks = response.data; 
                    });            
+                  }          
                   }
    });
            </script>
