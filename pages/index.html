@@ -41,7 +41,7 @@
          <div> 
           
         <form id="searchBarForm" ng-submit="search()">
-          <input type="text" id="searchBar" ng-model="input"  placeholder="Search For A Stock" autocomplete="off" class="search"/>
+          <input type="text" id="searchBar" ng-model="input" ng-pattern="/^[a-zA-Z]+$/" placeholder="Search For A Stock" autocomplete="off" class="search"/>
           <button id="submit" onclick="searchFunction();" ng-click="getInfo()" class="submit">Search</button>
         </form>  
       </div>
@@ -100,20 +100,22 @@
          alert("Please Enter A Valid Ticker");
      }
    }
-       
+
       </script>
         <script>
-             var app = angular.module('myApp', []);
-                   app.controller('myCtrl', function($scope, $http) {
-                     $scope.getInfo = function (input){
-                      if($scope.input != null && $scope.input !== ""){
-                      $http.get('api/stocks/' + $scope.input)
-                   .then(function(response) {
-                       $scope.stocks = response.data; 
-                   });            
-                  }          
-                  }
-   });
+
+                var app = angular.module('myApp', []);
+                app.controller('myCtrl', function ($scope, $http) {
+                    $scope.getInfo = function (input) {
+                        if ($scope.input != null && $scope.input !== "") {
+                            $http.get('api/stocks/' + $scope.input)
+                                .then(function (response) {
+                                    $scope.stocks = response.data;
+                                });
+                        }
+                    }
+                });
+
            </script>
   </body>
 </html>
