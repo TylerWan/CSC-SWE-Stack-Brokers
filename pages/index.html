@@ -93,7 +93,7 @@
                         .then(function (response) {
                             $scope.stocks = response.data;
                             if(response.data.length === 0)
-                                alert("You Entered Ticker That Does Not Exist");
+                                alert("You Entered A Ticker That Does Not Exist");
                         });
                 }
             }
