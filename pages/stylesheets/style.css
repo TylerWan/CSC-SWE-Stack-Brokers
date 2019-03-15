@@ -48,8 +48,7 @@ body {
 .homeButton:hover{
 
     background-color: rgb(27, 45, 70);
-    color: #fff; 
-    
+    color: #fff;
 }
 .PredictionButton{
   color: rgb(0, 0, 0);
@@ -141,8 +140,9 @@ body {
   padding-top: 30px;
   margin-left: 27px;
 }
-.floatLeft{
+.Image{
   float: left;
   width: 300px;
   height: 200px;
+  max-width: 100%;
 }
