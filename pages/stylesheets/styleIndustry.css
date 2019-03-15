@@ -1,0 +1,142 @@
+body {
+    background-image: url(background.png);
+}
+.container2{
+    background-image: url(background-container.png);
+    width: 1050px;
+    height: 1700px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 2px;
+}
+.insideContainer2{
+    text-align: center;
+    background-color: #fff;
+    width: 1000px;
+    height: 1500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.ITtitle{
+    float: left;
+    margin-left: 150px;
+    padding-bottom: 8px;
+}
+.myTableStyle{
+    padding-right: 8px;
+    padding-left: 8px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.mytableLeft{
+    background-color:gray;
+    float: left;
+    margin-left: 50px;
+}
+.mytableRight{
+    float: right;
+    background-color:gray;
+    margin-right: 50px;
+}
+.mytableCenter{
+    background-color:gray;
+    margin-right: auto;
+    margin-left: auto;
+}
+tr{
+    background-color:darkgray;
+    padding:20px;
+}
+td{
+    padding:10px 15px;
+}
+.industryContainer1{
+    height: 420px;
+}
+.industryContainer2{
+    height: 440px;
+    padding-bottom: 20px;
+}
+.IndustryButtonCenter{
+    color: rgb(0, 0, 0);
+    font-family: "proxima nova";
+    font-weight: 100;
+    font-size: 15px;
+    padding: 10px 8px;
+    text-decoration: none;
+    margin: auto;
+}
+.IndustryButtonCenter:hover{
+    background-color: rgb(27, 45, 70);
+    color: #fff;
+}
+
+.IndustryButtonLeft{
+    color: rgb(0, 0, 0);
+    font-family: "proxima nova";
+    font-weight: 100;
+    font-size: 15px;
+    float: left;
+    margin-left: 143px;
+    padding: 10px 8px 8px;
+    text-decoration: none;
+}
+.IndustryButtonLeft:hover{
+    background-color: rgb(27, 45, 70);
+    color: #fff;
+}
+.IndustryButtonRight{
+    olor: rgb(0, 0, 0);
+    font-family: "proxima nova";
+    font-weight: 100;
+    font-size: 15px;
+    float: right;
+    margin-right: 200px;
+    padding: 10px 8px 8px;
+    text-decoration: none;
+}
+.IndustryButtonRight:hover{
+    background-color: rgb(27, 45, 70);
+    color: #fff;
+}
+.IndustryButtonLeft2{
+    color: rgb(0, 0, 0);
+    font-family: "proxima nova";
+    font-weight: 100;
+    font-size: 15px;
+    float: left;
+    margin-left: 205px;
+    padding: 10px 8px 8px;
+    text-decoration: none;
+}
+.IndustryButtonLeft2:hover{
+    background-color: rgb(27, 45, 70);
+    color: #fff;
+}
+.IndustryButtonRight2{
+    color: rgb(0, 0, 0);
+    font-family: "proxima nova";
+    font-weight: 100;
+    font-size: 15px;
+    float: right;
+    margin-right: 200px;
+    padding: 10px 8px 8px;
+    text-decoration: none;
+}
+.IndustryButtonRight2:hover{
+    background-color: rgb(27, 45, 70);
+    color: #fff;
+}
+.homeButton{
+    color: rgb(0, 0, 0);
+    font-family: "proxima nova";
+    font-weight: 100;
+    font-size: 15px;
+
+    padding: 10px 8px;
+    text-decoration: none;
+}
+.homeButton:hover{
+    background-color: rgb(27, 45, 70);
+    color: #fff;
+}
