@@ -32,7 +32,7 @@ exports.showindustry = function(industry, res){
     database.showIndustry(res,industry);
 };
 exports.showbottom=function(res){
-  database.showBottom(res);
+    database.showBottom(res);
 };
 
 //Schedule stock DB updates every half hour from 03:00-20:30
