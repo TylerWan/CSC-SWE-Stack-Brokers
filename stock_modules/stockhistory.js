@@ -7,8 +7,28 @@ const DBName = 'stackbrokersdb';
 const stocktableName = 'historytable';
 const mykey = configinfo.historykey.toString();
 
+exports.updateStockHistory = function(){
+    console.log("Updating stock history...")
+    let time = new Date();
+    const today = time.getFullYear().toString() +'-'+ (time.getMonth()+1<10 ? '0'+(time.getMonth()+1).toString() : (time.getMonth()+1).toString())+'-' + (time.getDate()+1<10 ? '0'+(time.getDate()+1).toString() : (time.getDate()+1).toString());
 
-exports.initStockHistory = function(){
+    //Check for table
+    db.c.query("SELECT 1 FROM "+stocktableName+" LIMIT 1;", function (error, result, field) {
+        if(result===undefined){
+            createTable();
+        }else{
+            db.c.query("SHOW COLUMNS FROM "+stocktableName+" LIKE '"+today+"';", function (error, result, field) {
+                if(result===undefined){
+                    console.log("Today's column not found...")
+                }else{
+                    console.log("Today's column found.")
+                }
+            });
+        }
+    });
+
+};
+function createTable(){
     let time = new Date();
     const today = time.getFullYear().toString() +'-'+ (time.getMonth()+1<10 ? '0'+(time.getMonth()+1).toString() : (time.getMonth()+1).toString())+'-' + (time.getDate()+1<10 ? '0'+(time.getDate()+1).toString() : (time.getDate()+1).toString());
     console.log("Initializing Stock History...");
@@ -47,7 +67,7 @@ exports.initStockHistory = function(){
                         .then(response => {
                             db.c.query("INSERT INTO "+stocktableName+" (ticker) VALUES ('"+ticker+"')");
                             for(let date in response.history){
-                               db.c.query("UPDATE "+stocktableName+" SET d"+date.toString().replace(/[\-]/g,'')+" = "+response.history[date].close+" WHERE ticker = '"+ticker+"';")
+                                db.c.query("UPDATE "+stocktableName+" SET d"+date.toString().replace(/[\-]/g,'')+" = "+response.history[date].close+" WHERE ticker = '"+ticker+"';")
                             }
 
                         })
@@ -58,7 +78,7 @@ exports.initStockHistory = function(){
                 }
 
             });
-
+        console.log("History retrieved.")
         })
         .catch(error => {
             throw error;
@@ -66,7 +86,8 @@ exports.initStockHistory = function(){
 
 
 
-};
+}
+
 
 exports.getStockHistory = function(res, ticker){
     db.c.query("SELECT * FROM historytable")

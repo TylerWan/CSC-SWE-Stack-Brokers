@@ -60,6 +60,7 @@ exports.updateArticles = function(){
         console.log(Category+" articles updated.")
 
         }
+    history.updateStockHistory();
     //history.updateStockHistory();
     //setTimeout(updateg, 5000);
 
