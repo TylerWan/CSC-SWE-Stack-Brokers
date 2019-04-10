@@ -2,6 +2,7 @@ const si = require('stock-info');
 const database = require('./database');
 const schedule = require('node-cron');
 
+
 exports.showraw = function(res, stockid) {
     let stocks = [stockid];
     si.getStocksInfo(stocks).then(

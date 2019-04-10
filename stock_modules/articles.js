@@ -1,41 +1,86 @@
 const Gnews = require('node-gnews').Gnews;
 const instance = new Gnews();
 const db = require('./database');
+const projection = require('./projections');
+const history = require('./stockhistory');
 
 const DBName = 'stackbrokersdb';
 const stocktableName = 'articletable';
 const info = require('../stockconfig/info.json');
 const Sentiment = require('sentiment');
+const sentiment = new Sentiment();
+
+const publisherBlacklist = ["MONReport"];
+const options = {
+    extras: {
+        'down': -1,
+        'up': 1,
+        'dives': -2
+    }
+};
 
 
 exports.updateArticles = function(){
     let time = new Date();
     time = time.getFullYear().toString + time.getMonth()<10 ? '0'+time.getMonth().toString : time.getMonth().toString + time.getDate()<10 ? '0'+time.getDate().toString : time.getDate().toString;
-    console.log("Updating articles...");
+
     //Create DB / Use DB space
-    db.q("CREATE DATABASE IF NOT EXISTS " + DBName + ";");
-    db.q("USE " + DBName + ";");
+    db.c.query("USE " + DBName + ";");
 
     //Create Tables
-    db.q("DROP TABLE IF EXISTS "+stocktableName);
-    let stocktableFormat = ' (id int AUTO_INCREMENT, ticker varchar(8) NOT NULL, date varchar(25), title varchar(150), url varchar(170), sentiment float,  PRIMARY KEY (id));';
-    db.q("CREATE TABLE IF NOT EXISTS " + stocktableName + " " + stocktableFormat + ";");
+    db.c.query("DROP TABLE IF EXISTS "+stocktableName);
+    let stocktableFormat = '(id int AUTO_INCREMENT, ticker varchar(8), date varchar(25), title varchar(250), url varchar(250), sentiment float,  PRIMARY KEY (id), FOREIGN KEY (ticker) REFERENCES stocktable (ticker));';
+    db.c.query("CREATE TABLE IF NOT EXISTS " + stocktableName + " " + stocktableFormat + ";");
 
     //Add current day column
     let stocksinConfig = info;
     for (let Category in stocksinConfig) {
         for (let x in stocksinConfig[Category]) {
-            console.log("Fetching articles for "+stocksinConfig[Category][x]);
-            instance.search(stocksinConfig[Category][x]).then(articles => {
-                for (let x = 0; x < 5; x++) {
-                    let d = new Date(articles[x].pubDate);
-                    console.log(articles[x].title + " : " + d.toDateString() + " by " + articles[x].publisher);
-                    db.q("INSERT INTO "+stocktableName+" (ticker, date, title, url, sentiment) VALUES ('"+stocksinConfig[Category][x]+"', \""+'today'+
-                        "\", '"+articles[x].title.replace("'", " ")+"', \""+articles[x].link+"\", "+1+");");
-                }
+
+            db.c.query("SELECT fullName FROM stocktable WHERE ticker = '"+stocksinConfig[Category][x]+"'", function (err, result, fields) {
+                if (err) throw err;
+                instance.search(result[0].fullName).then(articles => {
+                    let maxcount = 5;
+                    for (let a = 0; a < maxcount; a++) {
+
+                        if(publisherBlacklist.includes(articles[a].publisher)){
+                            maxcount++;
+                        }else{
+                            let artdate = new Date(articles[a].pubDate);
+                            time = artdate.getFullYear().toString() + (artdate.getMonth()<10 ? '0'+artdate.getMonth().toString() : artdate.getMonth().toString()) + (artdate.getDate()<10 ? '0'+artdate.getDate().toString() : artdate.getDate().toString());
+                            db.c.query('INSERT INTO '+stocktableName+' (ticker, date, title, url, sentiment) VALUES (\"'+stocksinConfig[Category][x]+'\", \"'+time+
+                                '\", \"'+articles[a].title+'\", \"'+articles[a].link+'\", '+sentiment.analyze(articles[a].title, options).score+');');
+
+                        }
+
+                    }
+                });
             });
         }
+        console.log(Category+" articles updated.")
 
         }
+    //history.updateStockHistory();
+    //setTimeout(updateg, 5000);
+
+};
+function updateg(){
+    projection.updateGrowths()
+}
+
+exports.getAllArticles = function(res){
+    db.c.query("SELECT * FROM "+stocktableName +" ORDER BY date", function(error, result, field) {
+        if (error) throw error;
+        res.send(result);
+
+    });
+
+};
+exports.getStockArticles = function(res, ticker){
+    db.c.query("SELECT * FROM "+stocktableName +" WHERE ticker = '"+ticker+"'", function(error, result, field) {
+        if (error) throw error;
+        res.send(result);
+
+    });
 
 };
