@@ -17,11 +17,46 @@ exports.updateStockHistory = function(){
         if(result===undefined){
             createTable();
         }else{
+            //Check for last day's column
             db.c.query("SHOW COLUMNS FROM "+stocktableName+" LIKE '"+today+"';", function (error, result, field) {
                 if(result===undefined){
                     console.log("Today's column not found...")
                 }else{
-                    console.log("Today's column found.")
+                    db.c.query("SELECT ticker FROM stocktable", function (error, result, field) {
+                        for(let t in result){
+                            let ticker = result[t].ticker;
+                            //Search for ticker row in history table
+                            db.c.query("SELECT * FROM "+stocktableName+" WHERE ticker = '"+ticker+"'", function (error, result, field) {
+                                if(result.length===0){
+                                    console.log(ticker+" not found in history table, adding...");
+                                    stockdata.historical({
+                                        symbol: ticker,
+                                        API_TOKEN: mykey,
+                                        options: {
+                                            date_from: '2019-01-01',
+                                            date_to: today
+                                        }
+                                    })
+                                        .then(response => {
+                                            db.c.query("INSERT INTO "+stocktableName+" (ticker) VALUES ('"+ticker+"')");
+                                            for(let date in response.history){
+                                                db.c.query("UPDATE "+stocktableName+" SET d"+date.toString().replace(/[\-]/g,'')+" = "+response.history[date].close+" WHERE ticker = '"+ticker+"';")
+                                            }
+
+                                        })
+                                        .catch(error => {
+                                            throw error;
+                                        });
+                                }else{
+                                    console.log(ticker+" found in history table")
+                                }
+
+                            });
+
+
+                        }
+
+                    });
                 }
             });
         }
