@@ -4,6 +4,7 @@ const mysql = require('../dependency_modules/mysql');
 const info = require('../stockconfig/info.json');
 const si = require('stock-info');
 const articles = require('./articles');
+const projection = require('./projections');
 const history = require('./stockhistory');
 const configinfo = JSON5.parse(fs.readFileSync('./stockconfig/config', 'utf8'));
 const dbhost = configinfo.dbhost.toString(), dbuser=configinfo.dbuser.toString(), dbpass=configinfo.dbpass.toString(), dbport=configinfo.dbport.toString();
@@ -34,7 +35,7 @@ exports.connecttoDB = function(){
 };
 
 function updateDB() {
-
+    console.log("Updating databases, this may take a few minutes...")
     //Create DB / Use DB space
     con.query("CREATE DATABASE IF NOT EXISTS " + DBName + ";");
     con.query("USE " + DBName + ";");
@@ -68,8 +69,11 @@ function updateDB() {
             }
             console.log("Stocks Updated");
             console.log("Updating articles...");
-            setTimeout(updateart, 5000);
-            history.updateStockHistory();
+            setTimeout(updateart, 15000);
+            setTimeout(updateart, 30000);
+            setTimeout(updatehist, 5000);
+            setTimeout(updatehist, 60000);
+            setTimeout(updateg, 120000);
         });
 
 
@@ -77,6 +81,12 @@ function updateDB() {
 
 function updateart(){
     articles.updateArticles()
+}
+function updatehist(){
+    history.updateStockHistory();
+}
+function updateg(){
+    projection.updateGrowths();
 }
 function addStockToTable(ticker, industryName){
     let stocks=[];

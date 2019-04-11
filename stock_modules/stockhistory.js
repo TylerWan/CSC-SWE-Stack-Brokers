@@ -10,36 +10,49 @@ const si = require('stock-info');
 
 exports.updateStockHistory = function(){
     console.log("Updating stock history...")
+
     let time = new Date();
     const today = time.getFullYear().toString() +'-'+ (time.getMonth()+1<10 ? '0'+(time.getMonth()+1).toString() : (time.getMonth()+1).toString())+'-' + (time.getDate()+1<10 ? '0'+(time.getDate()+1).toString() : (time.getDate()+1).toString());
 
-    //Check for table
+
+
+    const yest = new Date();
+    yest.setUTCDate(yest.getUTCDate() + -2);
+    const yesterday = yest.getFullYear().toString() +'-'+ (yest.getMonth()+1<10 ? '0'+(yest.getMonth()+1).toString() : (yest.getMonth()+1).toString())+'-' + (yest.getDate()+1<10 ? '0'+(yest.getDate()+1).toString() :(yest.getDate()+1).toString());
+        //Check for table
     db.c.query("SELECT 1 FROM "+stocktableName+" LIMIT 1;", function (error, result, field) {
+
         if(result===undefined){
             createTable();
         }else{
             //Check for that all date columns are in history table
-            db.c.query("SHOW COLUMNS FROM "+stocktableName+" LIKE '"+today.toString().replace(/[\-]/g,'')+"';", function (error, result, field) {
-                if(result===undefined){
+            db.c.query("SHOW COLUMNS FROM "+stocktableName+" LIKE 'd"+yesterday.toString().replace(/[\-]/g,'')+"';", function (error, result, field) {
+
+                if(result.length===0){
                     console.log("Adding latest day column...");
                     //Add today's column
-                    db.c.query("ALTER TABLE "+stocktableName+" ADD d"+today.toString().replace(/[\-]/g,'')+" float");
+                    db.c.query("ALTER TABLE "+stocktableName+" ADD d"+yesterday.toString().replace(/[\-]/g,'')+" float");
                     //Update ticker's prices for that day
 
                     db.c.query("SELECT ticker FROM stocktable", function (error, result, field) {
                         for (let t in result) {
                             let ticker = result[t].ticker;
-                            stockdata.historicalDay({
+
+                            stockdata.historical({
                                 symbol: ticker,
-                                API_TOKEN: process.env.TOKEN,
+                                API_TOKEN: mykey,
                                 options: {
-                                    date: today
+                                    date_from: yesterday,
+                                    date_to: yesterday
                                 }
                             })
                                 .then(response => {
-                                    db.c.query("UPDATE "+stocktableName+" SET d"+today.toString().replace(/[\-]/g,'')+" = "+response.history[date].close+" WHERE ticker = '"+ticker+"';")
+
+                                    db.c.query("UPDATE "+stocktableName+" SET d"+yesterday.toString().replace(/[\-]/g,'')+" = "+response.history[yesterday].close+" WHERE ticker = '"+ticker+"';")
                                 })
                                 .catch(error => {
+                                    console.log("fuck")
+                                    console.log(error);
                                     throw error;
                                 });
                         }
@@ -59,7 +72,7 @@ exports.updateStockHistory = function(){
                                         API_TOKEN: mykey,
                                         options: {
                                             date_from: '2019-01-01',
-                                            date_to: today
+                                            date_to: yesterday
                                         }
                                     })
                                         .then(response => {
@@ -70,6 +83,7 @@ exports.updateStockHistory = function(){
 
                                         })
                                         .catch(error => {
+                                            console.log("fuck1")
                                             throw error;
                                         });
                                 }
@@ -131,6 +145,7 @@ function createTable(){
 
                         })
                         .catch(error => {
+                            console.log("fuck2")
                             throw error;
                         });
 
@@ -140,6 +155,7 @@ function createTable(){
         console.log("History is being successfully retrieved. This may take a few minutes.")
         })
         .catch(error => {
+            console.log("fuck3")
             throw error;
         });
 

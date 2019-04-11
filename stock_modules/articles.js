@@ -36,7 +36,6 @@ exports.updateArticles = function(){
     let stocksinConfig = info;
     for (let Category in stocksinConfig) {
         for (let x in stocksinConfig[Category]) {
-
             db.c.query("SELECT fullName FROM stocktable WHERE ticker = '"+stocksinConfig[Category][x]+"'", function (err, result, fields) {
                 if (err) throw err;
                 instance.search(result[0].fullName).then(articles => {
@@ -61,13 +60,11 @@ exports.updateArticles = function(){
     console.log("Articles updated.");
 
     //history.updateStockHistory();
-    setTimeout(updateg, 5000);
+
 
 };
 
-function updateg(){
-    projection.updateGrowths();
-}
+
 exports.getAllArticles = function(res){
     db.c.query("SELECT * FROM "+stocktableName +" ORDER BY date", function(error, result, field) {
         if (error) throw error;
