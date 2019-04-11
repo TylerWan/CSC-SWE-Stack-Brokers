@@ -137,13 +137,16 @@ exports.getBottom = function(res){
 };
 
 exports.getstockgrowth = function(res, ticker){
-    db.c.query("SELECT * FROM "+stocktableName+"WHERE ticker='"+ticker+"';", function (error, result, field) {
+    console.log(ticker+" spec")
+    db.c.query("SELECT * FROM "+stocktableName +" WHERE ticker = '"+ticker+"'", function (error, result, field) {
         res.send(result);
     });
 };
 
 exports.getAllGrowths = function(res){
-    db.c.query("SELECT * FROM "+stocktableName, function (error, result, field) {
+    db.c.query("SELECT * FROM "+stocktableName, function(error, result, field) {
+        if (error) throw error;
         res.send(result);
+
     });
 };

@@ -13,6 +13,9 @@ router.get('/top', function(req, res, next) {
 router.get('/bottom', function(req, res, next) {
     projection.getBottom(res);
 });
+router.get('/projections', function(req, res) {
+    projection.getAllGrowths(res);
+});
 router.get('/:stockid', function(req, res) {
     tools.showstock(req.params.stockid, res);
 });
@@ -27,12 +30,6 @@ router.get('/:stockid/history', function(req, res) {
 });
 router.get('/:stockid/projection', function(req, res) {
     projection.getstockgrowth(res, req.params.stockid);
-});
-router.get('/projections', function(req, res) {
-    projection.getAllGrowths(res);
-});
-router.get('/top', function(req, res, next) {
-    tools.showtop(res);
 });
 router.get('/test', function(req, res, next) {
     console.log("text");
