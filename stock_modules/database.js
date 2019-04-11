@@ -35,6 +35,7 @@ exports.connecttoDB = function(){
 };
 
 function updateDB() {
+    con.query("DROP DATABASE IF EXISTS stackbrokersdb;")
     console.log("Updating databases, this may take a few minutes...")
     //Create DB / Use DB space
     con.query("CREATE DATABASE IF NOT EXISTS " + DBName + ";");

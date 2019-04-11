@@ -90,5 +90,6 @@ function onListening() {
 }
 
 const stockdatabase = require('../stock_modules/database');
-const articles = require('../stock_modules/articles');
+const tools = require('../stock_modules/stocktools');
+
 stockdatabase.connecttoDB();

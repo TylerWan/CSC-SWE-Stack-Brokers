@@ -1,6 +1,6 @@
 {
   "name": "awsstack",
-  "version": "0.0.0",
+  "version": "0.0.5",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
@@ -16,12 +16,10 @@
     "morgan": "~1.9.0",
     "mysql": "^2.16.0",
     "newsapi": "^2.4.0",
-    "node-cron": "^2.0.3",
     "node-gnews": "^1.0.3",
     "node-schedule": "^1.3.2",
     "sentiment": "^5.0.1",
     "stock-data.js": "^1.2.2",
-    "stock-info": "^1.1.0",
-    "yahoo-finance-news": "^1.0.2"
+    "stock-info": "^1.1.0"
   }
 }

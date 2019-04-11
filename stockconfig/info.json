@@ -6,8 +6,8 @@
     "INTC",
     "AMD",
     "NVDA",
-    "TSLA",
-    "SNE"
+    "SNE",
+    "TSLA"
   ],
   "Health": [
     "CVS",
@@ -22,6 +22,7 @@
     "MCD",
     "YUM",
     "KHC",
+    "NSRGY",
     "SFM",
     "K",
     "CMG",

@@ -4,7 +4,7 @@
   dbport: '3306',
   dbuser: 'user',
   dbpass: '',
-  //News API Key
-  newsapikey: 'e290de07fc98451c99ad05be2fe8a197',
-  historykey: 'rW44nTxxi30Xq73T7caoqKrT5zAzsZUjJtJldq5O5Mt2bbhNwbHSxu4RfqQg'
+    //News API Key
+    newsapikey: 'e290de07fc98451c99ad05be2fe8a197',
+    historykey: 'rW44nTxxi30Xq73T7caoqKrT5zAzsZUjJtJldq5O5Mt2bbhNwbHSxu4RfqQg'
 }
