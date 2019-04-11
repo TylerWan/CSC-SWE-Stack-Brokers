@@ -6,6 +6,7 @@ const configinfo = JSON5.parse(fs.readFileSync('./stockconfig/config', 'utf8'));
 const DBName = 'stackbrokersdb';
 const stocktableName = 'historytable';
 const mykey = configinfo.historykey.toString();
+const si = require('stock-info');
 
 exports.updateStockHistory = function(){
     console.log("Updating stock history...")
@@ -17,11 +18,35 @@ exports.updateStockHistory = function(){
         if(result===undefined){
             createTable();
         }else{
-            //Check for last day's column
-            db.c.query("SHOW COLUMNS FROM "+stocktableName+" LIKE '"+today+"';", function (error, result, field) {
+            //Check for that all date columns are in history table
+            db.c.query("SHOW COLUMNS FROM "+stocktableName+" LIKE '"+today.toString().replace(/[\-]/g,'')+"';", function (error, result, field) {
                 if(result===undefined){
-                    console.log("Today's column not found...")
+                    console.log("Adding latest day column...");
+                    //Add today's column
+                    db.c.query("ALTER TABLE "+stocktableName+" ADD d"+today.toString().replace(/[\-]/g,'')+" float");
+                    //Update ticker's prices for that day
+
+                    db.c.query("SELECT ticker FROM stocktable", function (error, result, field) {
+                        for (let t in result) {
+                            let ticker = result[t].ticker;
+                            stockdata.historicalDay({
+                                symbol: ticker,
+                                API_TOKEN: process.env.TOKEN,
+                                options: {
+                                    date: today
+                                }
+                            })
+                                .then(response => {
+                                    db.c.query("UPDATE "+stocktableName+" SET d"+today.toString().replace(/[\-]/g,'')+" = "+response.history[date].close+" WHERE ticker = '"+ticker+"';")
+                                })
+                                .catch(error => {
+                                    throw error;
+                                });
+                        }
+                    });
+
                 }else{
+                    //Check that all stocks are in history table
                     db.c.query("SELECT ticker FROM stocktable", function (error, result, field) {
                         for(let t in result){
                             let ticker = result[t].ticker;
@@ -47,8 +72,6 @@ exports.updateStockHistory = function(){
                                         .catch(error => {
                                             throw error;
                                         });
-                                }else{
-                                    console.log(ticker+" found in history table")
                                 }
 
                             });
@@ -58,6 +81,7 @@ exports.updateStockHistory = function(){
 
                     });
                 }
+                console.log("Stock history updated.")
             });
         }
     });
@@ -119,12 +143,14 @@ function createTable(){
             throw error;
         });
 
-
-
 }
 
 
 exports.getStockHistory = function(res, ticker){
-    db.c.query("SELECT * FROM historytable")
+    db.c.query("SELECT * FROM "+stocktableName +" WHERE ticker = '"+ticker+"';", function(error, result, field) {
+        if (error) throw error;
+        res.send(result);
+
+    });
 };
 

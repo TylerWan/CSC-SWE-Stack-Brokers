@@ -3,5 +3,8 @@
   dbhost: 'localhost',
   dbport: '3306',
   dbuser: 'user',
-  dbpass: ''
+  dbpass: '',
+  //News API Key
+  newsapikey: 'e290de07fc98451c99ad05be2fe8a197',
+  historykey: 'Pv5M5Rn8VGIiJk7SO1lz3NlPEFHuOtnbSIlaNFwRtX6QaxElvyn5EjtnYks1'
 }

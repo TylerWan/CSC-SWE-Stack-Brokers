@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const tools = require('../stock_modules/stocktools');
+const history = require('../stock_modules/stockhistory');
 
 router.get('/', function(req, res, next) {
     tools.showstocks(res);
@@ -20,7 +21,9 @@ router.get('/industry/:industry', function(req, res) {
 router.get('/:stockid/realtime', function(req, res) {
     tools.showraw(res, req.params.stockid);
 });
-
+router.get('/:stockid/history', function(req, res) {
+    history.getStockHistory(res, req.params.stockid);
+});
 router.get('/top', function(req, res, next) {
     tools.showtop(res);
 });
