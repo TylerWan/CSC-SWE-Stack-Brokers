@@ -21,9 +21,13 @@ node bin\www
 ## API
 
 - /api/stocks = shows all DB stocks
-- /api/stocks/[stockticker] = shows certain DB stock info
-- /api/stocks/[stockticker]/realtime = shows API lookup for stock
 - /api/stocks/(top/bottom) = shows top/bottom 5 stocks in database
 - /api/stocks/industry/[industry] = shows industry stocks
+
+- /api/stocks/[stockticker] = shows certain DB stock info
+- /api/stocks/[stockticker]/realtime = shows API lookup for stock
+- /api/stocks/[stockticker]/history = shows stock price history
+- /api/stocks/[stockticker]/projection = shows stock projection models
+
 - /api/articles = shows 5 articles for each stock
 - /api/articles/[stockticker] = shows 5 articles for certain stock

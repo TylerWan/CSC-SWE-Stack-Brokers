@@ -42,9 +42,8 @@ exports.updateArticles = function(){
                 instance.search(result[0].fullName).then(articles => {
                     let maxcount = 5;
                     for (let a = 0; a < maxcount; a++) {
-
                         if(publisherBlacklist.includes(articles[a].publisher)){
-                            maxcount++;
+                            maxcount=6;
                         }else{
                             let artdate = new Date(articles[a].pubDate);
                             time = artdate.getFullYear().toString() + (artdate.getMonth()<10 ? '0'+artdate.getMonth().toString() : artdate.getMonth().toString()) + (artdate.getDate()<10 ? '0'+artdate.getDate().toString() : artdate.getDate().toString());
@@ -57,18 +56,18 @@ exports.updateArticles = function(){
                 });
             });
         }
-        console.log(Category+" articles updated.")
 
-        }
-    history.updateStockHistory();
+    }
+    console.log("Articles updated.");
+
     //history.updateStockHistory();
-    //setTimeout(updateg, 5000);
+    setTimeout(updateg, 5000);
 
 };
-function updateg(){
-    projection.updateGrowths()
-}
 
+function updateg(){
+    projection.updateGrowths();
+}
 exports.getAllArticles = function(res){
     db.c.query("SELECT * FROM "+stocktableName +" ORDER BY date", function(error, result, field) {
         if (error) throw error;

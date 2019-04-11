@@ -4,6 +4,7 @@ const mysql = require('../dependency_modules/mysql');
 const info = require('../stockconfig/info.json');
 const si = require('stock-info');
 const articles = require('./articles');
+const history = require('./stockhistory');
 const configinfo = JSON5.parse(fs.readFileSync('./stockconfig/config', 'utf8'));
 const dbhost = configinfo.dbhost.toString(), dbuser=configinfo.dbuser.toString(), dbpass=configinfo.dbpass.toString(), dbport=configinfo.dbport.toString();
 
@@ -13,18 +14,6 @@ const con = mysql.createConnection({
     password: dbpass,
     port: dbport
 });
-function daycolumnname(){
-    let date = new Date();
-    let month = date.getMonth()+1;
-    if(month<10)
-        month = '0' + month;
-    let day = date.getDate();
-    if(day<10)
-        day = '0' + day;
-    return 'd' + date.getFullYear()+month+day;
-
-
-};
 
 const DBName = 'stackbrokersdb';
 const stocktableName = 'stocktable';
@@ -80,6 +69,7 @@ function updateDB() {
             console.log("Stocks Updated");
             console.log("Updating articles...");
             setTimeout(updateart, 5000);
+            history.updateStockHistory();
         });
 
 
@@ -107,22 +97,10 @@ exports.updateDB = function(){
 exports.c = con;
 
 
-const bestworstcount = 15;
-exports.showTop = function(res){
-    con.query("SELECT * FROM "+stocktableName +" ORDER BY projected DESC limit "+bestworstcount, function(error, result, field) {
-        if (error) throw error;
-        res.send(result);
 
-    });
-};
 
-exports.showBottom = function(res){
-    con.query("SELECT * FROM "+stocktableName +" ORDER BY projected ASC limit "+bestworstcount, function(error, result, field) {
-        if (error) throw error;
-        res.send(result);
 
-    });
-};
+
 exports.showStock = function(ticker, res){
     con.query("SELECT * FROM "+stocktableName+" WHERE ticker = '"+ticker+"'", function(error, result, field) {
         if (error)
@@ -131,6 +109,7 @@ exports.showStock = function(ticker, res){
 
     });
 };
+
 exports.showCurrentStockTable = function(res){
     con.query("SELECT * FROM "+stocktableName, function(error, result, field) {
         if (error) throw error;
@@ -140,13 +119,6 @@ exports.showCurrentStockTable = function(res){
 };
 exports.showIndustry = function(res, industry){
     con.query("SELECT * FROM "+stocktableName+" WHERE industry = '"+industry+"'", function(error, result, field) {
-        if (error) throw error;
-        res.send(result);
-
-    });
-};
-exports.showStock = function(ticker, res){
-    con.query("SELECT * FROM "+stocktableName+" WHERE ticker = '"+ticker+"'", function(error, result, field) {
         if (error) throw error;
         res.send(result);
 

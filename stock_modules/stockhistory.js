@@ -137,7 +137,7 @@ function createTable(){
                 }
 
             });
-        console.log("History retrieved.")
+        console.log("History is being successfully retrieved. This may take a few minutes.")
         })
         .catch(error => {
             throw error;
