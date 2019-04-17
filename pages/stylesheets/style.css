@@ -9,11 +9,14 @@ body {
     background-color:gray;
     margin-left: auto;
     margin-right: auto;
+    text-align: center;
+  }
+  .newsLinks{
+    font-size: 20px;
   }
    tr{
      background-color:darkgray;
       padding:20px;
-  
     }
   td{
       padding:10px 15px;

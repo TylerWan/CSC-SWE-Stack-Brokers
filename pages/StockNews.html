@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<script src='index.js'></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <link rel="stylesheet" href="./stylesheets/style.css"/>
 <head>
     <title>The Stack Brokers</title>
     <link rel="stylesheet" href="./stylesheets/style.css" />
-    <script async src="./index.js"></script>
 </head>
 <body>
 <div id="container" class="container">
@@ -35,14 +33,15 @@
                         <button id="submit" onclick="searchFunction();" ng-click="getInfo()" class="submit">Search</button>
                     </form>
                     <table class="mytable">
-                    <tr class="myrow">
-                    <td class="label">Articles</td>
-
+                    <tr>
+                    <td>Title</td>
+                    <td>Articles</td>
+                    <td>Date Published</td>
                     </tr>
-                    <tr ng-repeat="x in stocks" class="myrow">
-
-                    <td class="ele"><a ng-href="{{x.url}}">{{x.url}}</a></td>
-
+                    <tr ng-repeat="x in news">
+                    <td>{{x.title}}</td>
+                    <td class="newsLinks"><a ng-href="{{x.url}}">{{x.url}}</a></td>
+                    <td>{{x.date}}</td>
                     </tr>
             </table>
         </div>
@@ -76,7 +75,8 @@
                 $scope.errorCheck = "";
                 $http.get('api/articles/' + $scope.input)
                     .then(function (response) {
-                        $scope.stocks = response.data;
+                        $scope.news = response.data;
+                        console.log($scope.news);
                         if(response.data.length === 0)
                             alert("You Entered A Ticker That Does Not Exist");
                     });

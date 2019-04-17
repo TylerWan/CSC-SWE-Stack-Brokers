@@ -3,36 +3,51 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 <link rel="stylesheet" href="./stylesheets/style.css"/>
 <head>
-  <title>Popular Stocks</title>
-</head>
 
+</head>
 <body>
 <div id="container" class="container">
- <div id="insideContainer" class="insideContainer">
-  <div id="title1" class="title1">
-  Worst Stocks
-  <p></p>
+  <div id="insideContainer" class="insideContainer">
+    <div id="title1" class="title1">
+    </div>
+<div id="border" class="border">
+  <div id="Name" class="Name">
+    <h1>Worst Performing Stocks</h1>
+  </div>
+  <button onclick="window.location.href = 'index.html'" class="homeButton">Home</button>
+  <button onclick="window.location.href = 'GoodStocks.html'"class="homeButton">Best Stocks</button>
+  <button onclick="window.location.href ='worstStock.html'"class="homeButton">Worst Stocks</button>
+  <button onclick="window.location.href = 'PLACEHOLDER.html'" class="homeButton">Popular Stocks</button>
+  <button onclick="window.location.href = 'Industry.html'" class="homeButton">Browse Industries</button>
+  <button onclick="window.location.href = 'StockNews.html'" class="homeButton">Stock News</button>
+  <br />
+  <hr />
+  <br />
 </div>
 
-<div ng-app="myApp" ng-controller="myCtrl" class="myTableStyle">
-  <table class="mytable">
-    <tr class="myrow">
-      <td class="label">Ticker</td>
-      <td class="label">Name</td>
-      <td class="label">Industry</td>
-      <td class="label">Current Stock</td>
-      <td class="label">Projected</td>
-      
-    </tr>
-    <tr ng-repeat="x in stocks" class="myrow">
-      <td class="ele">{{x.ticker}}</td>
-      <td class="ele">{{x.fullName}}</td>
-      <td class="ele">{{x.industry}}</td>
-      <td class="ele">{{x.currentprice}}</td>
-      <td class="ele">{{x.projected}}</td>  
-    </tr>
-    </tbody>
-  </table>
+
+
+   <div ng-app="myApp" ng-controller="myCtrl" class="myTableStyle">
+     <table class="mytable">
+       <tr>
+         <td>Ticker</td>
+         <td>Name</td>
+         <td>Industry</td>
+         <td>Current Stock</td>
+         <td>Projected</td>
+
+
+       </tr>
+       <tr ng-repeat="x in stocks">
+         <td>{{x.ticker}}</td>
+         <td>{{x.fullName}}</td>
+         <td>{{x.industry}}</td>
+         <td>{{x.currentprice}}</td>
+         <td>{{x.latestavgsentiment}}</td>
+       </tr>
+     </table>
+   </div>
+</div>
 </div>
 </body>
 <script>
@@ -42,9 +57,8 @@ var app = angular.module('myApp', []);
         $http.get("/api/stocks/bottom") //call for worst stocks
             .then(function(response) {
                 $scope.stocks = response.data;
+              console.log($scope.stocks);
             });   
     });
 </script>
-</div>
-</div>
 </html>
