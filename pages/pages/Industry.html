@@ -1,0 +1,182 @@
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<link rel="stylesheet" href="./stylesheets/styleIndustry.css"/>
+<head>
+  <title>Browse By Industry</title>
+    <link rel="stylesheet" href="styleIndustry.css">
+    <link rel="stylesheet" href="stylesheets/styleIndustry.css">
+</head>
+
+<body>
+<div id="container" class="container2">
+ <div id="insideContainer" class="insideContainer2">
+
+     <div id="border" class="border">
+         <div id="Name" class="Name">
+             <h1>Browse By Industry</h1>
+         </div>
+         <button onclick="window.location.href = 'index.html'" class="homeButton">Home</button>
+         <button onclick="window.location.href = 'GoodStocks.html'"class="homeButton">Best Stocks</button>
+         <button onclick="window.location.href ='worstStock.html'"class="homeButton">Worst Stocks</button>
+         <button onclick="window.location.href = 'PALCEHOLDER.html'" class="homeButton">Popular Stocks</button>
+         <button onclick="window.location.href = 'Industry.html'" class="homeButton">Browse Industries</button>
+         <button onclick="window.location.href = 'StockNews.html'" class="homeButton">Stock News</button>
+
+         <br />
+         <hr />
+         <br />
+     </div>
+     <div class="industryContainer1">
+     <button onclick="window.location.href = 'itIndustry.html'" class="IndustryButtonLeft">Information Technology Industry</button>
+     <button onclick="window.location.href = 'healthIndustry.html'" class="IndustryButtonRight">Health Industry</button>
+<div ng-app="myApp" ng-controller="myCtrl" class="myTableStyle">
+  <table class="mytableRight">
+    <tr>
+      <td>Ticker</td>
+      <td>Name</td>
+      <td>Industry</td>
+
+
+
+    </tr>
+    <tr ng-repeat="x in stocks">
+      <td>{{x.ticker}}</td>
+      <td>{{x.fullName}}</td>
+      <td>{{x.industry}}</td>
+
+
+    </tr>
+    </table>
+</div>
+
+<div id="app2" ng-app='myApp2' ng-controller="myCtrl2" class="myTableStyle">
+        <table class="mytableLeft">
+                <tr>
+                  <td>Ticker</td>
+                  <td>Name</td>
+                  <td>Industry</td>
+
+
+
+                </tr>
+                <tr ng-repeat="x in stocks">
+                  <td>{{x.ticker}}</td>
+                  <td>{{x.fullName}}</td>
+                  <td>{{x.industry}}</td>
+
+
+                </tr>
+                </table>
+</div>
+</div>
+     <div class="industryContainer2">
+     <button onclick="window.location.href = 'foodIndustry.html'" class="IndustryButtonLeft2">Food Industry</button>
+     <button onclick="window.location.href = 'financeIndustry.html'" class="IndustryButtonRight2">Finance Industry</button>
+
+     <div id="app3" ng-app='myApp3' ng-controller="myCtrl3" class="myTableStyle">
+         <table class="mytableLeft">
+             <tr>
+                 <td>Ticker</td>
+                 <td>Name</td>
+                 <td>Industry</td>
+
+
+
+             </tr>
+             <tr ng-repeat="x in stocks">
+                 <td>{{x.ticker}}</td>
+                 <td>{{x.fullName}}</td>
+                 <td>{{x.industry}}</td>
+
+             </tr>
+         </table>
+     </div>
+     <div id="app4" ng-app='myApp4' ng-controller="myCtrl4" class="myTableStyle">
+         <table class="mytableRight">
+             <tr>
+                 <td>Ticker</td>
+                 <td>Name</td>
+                 <td>Industry</td>
+
+
+
+             </tr>
+             <tr ng-repeat="x in stocks">
+                 <td>{{x.ticker}}</td>
+                 <td>{{x.fullName}}</td>
+                 <td>{{x.industry}}</td>
+
+             </tr>
+         </table>
+     </div>
+     </div>
+     <div class="industryContainer3">
+         <button onclick="window.location.href = 'energyIndustry.html'" class="IndustryButtonCenter">Energy Industry</button>
+
+         <div id="app5" ng-app='myApp5' ng-controller="myCtrl5" class="myTableStyle">
+             <table class="mytableCenter">
+                 <tr>
+                     <td>Ticker</td>
+                     <td>Name</td>
+                     <td>Industry</td>
+
+
+
+                 </tr>
+                 <tr ng-repeat="x in stocks">
+                     <td>{{x.ticker}}</td>
+                     <td>{{x.fullName}}</td>
+                     <td>{{x.industry}}</td>
+
+                 </tr>
+             </table>
+         </div>
+ </div>
+</div>
+</div>
+</body>
+<script>
+ var app = angular.module('myApp', [])
+    app.controller('myCtrl', function($scope, $http) {
+                  $http.get("api/stocks/industry/health")
+                .then(function(response) {
+                    $scope.stocks = response.data;
+               });
+        angular.bootstrap(document.getElementById('app2'), ['myApp2']);
+        });
+
+ var app = angular.module('myApp2', [])
+ app.controller('myCtrl2', function($scope, $http) {
+     $http.get("api/stocks/industry/tech")
+         .then(function(response) {
+             $scope.stocks = response.data;
+         });
+     angular.bootstrap(document.getElementById('app3'), ['myApp3']);
+ });
+ var app = angular.module('myApp3', [])
+ app.controller('myCtrl3', function($scope, $http) {
+     $http.get("api/stocks/industry/food")
+         .then(function(response) {
+             $scope.stocks = response.data;
+         });
+     angular.bootstrap(document.getElementById('app4'), ['myApp4']);
+ });
+ var app = angular.module('myApp4', [])
+ app.controller('myCtrl4', function($scope, $http) {
+     $http.get("api/stocks/industry/finance")
+         .then(function(response) {
+             $scope.stocks = response.data;
+         });
+     angular.bootstrap(document.getElementById('app5'), ['myApp5']);
+ });
+ var app = angular.module('myApp5', [])
+ app.controller('myCtrl5', function($scope, $http) {
+     $http.get("api/stocks/industry/energy")
+         .then(function(response) {
+             $scope.stocks = response.data;
+         });
+ });
+</script>
+
+
+</html>

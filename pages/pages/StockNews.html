@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<link rel="stylesheet" href="./stylesheets/style.css"/>
+<head>
+    <title>The Stack Brokers</title>
+    <link rel="stylesheet" href="./stylesheets/style.css" />
+</head>
+<body>
+<div id="container" class="container">
+    <div id="insideContainer" class="insideContainer">
+        <div id="border" class="border">
+            <div id="Name" class="Name">
+                <h1>Stack Brokers</h1>
+            </div>
+            <button onclick="window.location.href = 'index.html'" class="homeButton">Home</button>
+            <button onclick="window.location.href = 'GoodStocks.html'"class="homeButton">Best Stocks</button>
+            <button onclick="window.location.href ='worstStock.html'"class="homeButton">Worst Stocks</button>
+            <button onclick="window.location.href = 'PLACEHOLDER.html'" class="homeButton">Popular Stocks</button>
+            <button onclick="window.location.href = 'Industry.html'" class="homeButton">Browse Industries</button>
+            <button onclick="window.location.href = 'StockNews.html'" class="homeButton">Stock News</button>
+            <br />
+            <hr />
+            <br />
+        </div>
+        <div ng-app="myApp" ng-controller="myCtrl" class="myTableStyle">
+            <div id="SearchBarName" class="SearchBarName">
+                Find A Stock
+                <div>
+
+                    <form id="searchBarForm" ng-submit="search()">
+                        <input type="text" id="searchBar" ng-model="input" ng-pattern="/^[a-zA-Z]+$/" placeholder="Search For Articles About A Stock" autocomplete="on" class="search"/>
+                        <button id="submit" onclick="searchFunction();" ng-click="getInfo()" class="submit">Search</button>
+                    </form>
+                    <table class="mytable">
+                    <tr>
+                    <td>Title</td>
+                    <td>Articles</td>
+                    <td>Date Published</td>
+                    </tr>
+                    <tr ng-repeat="x in news">
+                    <td>{{x.title}}</td>
+                    <td class="newsLinks"><a ng-href="{{x.url}}">{{x.url}}</a></td>
+                    <td>{{x.date}}</td>
+                    </tr>
+            </table>
+        </div>
+    </div>
+</div>
+    </div>
+</div>
+</body>
+<script>
+    function searchFunction(){
+        var input = document.getElementById("searchBar").value;
+        var n = input.length;
+        var letters = /^[A-Za-z]+$/;
+        if(letters.test(input) == true){
+            if (n>5 | n===0)
+            {
+                alert("Please Enter A Valid Ticker");
+            }
+
+        }
+        else{
+            alert("Please Enter A Valid Ticker");
+        }
+    }
+    </script>
+    <script>
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function ($scope, $http) {
+        $scope.getInfo = function (input) {
+            if ($scope.input != null && $scope.input !== "") {
+                $scope.errorCheck = "";
+                $http.get('api/articles/' + $scope.input)
+                    .then(function (response) {
+                        $scope.news = response.data;
+                        console.log($scope.news);
+                        if(response.data.length === 0)
+                            alert("You Entered A Ticker That Does Not Exist");
+                    });
+            }
+        }
+    });
+    </script>
+</html>

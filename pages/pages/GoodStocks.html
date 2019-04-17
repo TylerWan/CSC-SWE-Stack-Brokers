@@ -1,0 +1,86 @@
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<link rel="stylesheet" href="./stylesheets/style.css"/>
+<head>
+  <title>Best Stocks</title>
+</head>
+
+<body>
+<div id="container" class="container">
+ <div id="insideContainer" class="insideContainer">
+  <div id="title1" class="title1">
+</div>
+   <div id="border" class="border">
+     <div id="Name" class="Name">
+       <h1>Top Performing Stocks</h1>
+     </div>
+     <button onclick="window.location.href = 'index.html'" class="homeButton">Home</button>
+     <button onclick="window.location.href = 'GoodStocks.html'"class="homeButton">Best Stocks</button>
+     <button onclick="window.location.href ='worstStock.html'"class="homeButton">Worst Stocks</button>
+     <button onclick="window.location.href = 'PLACEHOLDER.html'" class="homeButton">Popular Stocks</button>
+     <button onclick="window.location.href = 'Industry.html'" class="homeButton">Browse Industries</button>
+     <button onclick="window.location.href = 'StockNews.html'" class="homeButton">Stock News</button>
+     <br />
+     <hr />
+     <br />
+   </div>
+<div ng-app="myApp" ng-controller="myCtrl" class="myTableStyle">
+  <form>
+  <table class="mytable">
+    <tr>
+      <td>Ticker</td>
+      <td>Name</td>
+      <td>Industry</td>
+      <td>Current Stock</td>
+      <td>Projected</td>
+
+      
+    </tr>
+    <tr ng-repeat="x in stocks">
+      <td>{{x.ticker}}</td>
+      <td>{{x.fullName}}</td>
+      <td>{{x.industry}}</td>
+      <td>{{x.currentprice}}</td>
+      <td>{{x.latestavgsentiment}}</td>
+    </tr>
+    </table>
+  </form>
+</div>
+ </div>
+</div>
+</body>
+<script>
+  var n = 0;
+  var m = 0;
+  var potato;
+ var app = angular.module('myApp', [])
+    app.controller('myCtrl', function($scope, $http) {
+              $scope.combined = [];
+              $scope.stocks = [];
+              $scope.temp = [];
+                  $http.get("api/stocks/top")
+                .then(function(response) {
+                    $scope.stocks = response.data;
+                    $scope.ticker = JSON.stringify($scope.stocks);
+                    for(i=0; i<20; i++) {
+                      n = $scope.ticker.indexOf('ticker', m);
+                      m = n+1;
+                      var x = $scope.ticker.substr(n+9, 5);
+                      for(p=0; p<5; p++){
+                        if(x[p] === '\"' || x[p] === ',')
+                          x = x.substr(0,p--);
+                      }
+                      console.log(x);
+                      $http.get("api/stocks/" + x)
+                              .then(function (response1) {
+                                $scope.something = response1.data;
+                                $scope.stocks = $scope.stocks.concat($scope.something);
+                                console.log($scope.stocks);
+                              });
+                    }
+               });
+
+        });   
+</script>
+
+</html>
