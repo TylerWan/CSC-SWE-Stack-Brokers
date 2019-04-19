@@ -38,7 +38,7 @@
 
 
        </tr>
-       <tr ng-repeat="x in stocks">
+       <tr ng-repeat="x in output">
          <td>{{x.ticker}}</td>
          <td>{{x.fullName}}</td>
          <td>{{x.industry}}</td>
@@ -52,13 +52,41 @@
 </body>
 <script>
 
-var app = angular.module('myApp', []);
-    app.controller('myCtrl', function($scope, $http) {
-        $http.get("/api/stocks/bottom") //call for worst stocks
+  var i = 0;
+  var j;
+  var app = angular.module('myApp', [])
+  app.controller('myCtrl', function($scope, $http) {
+    $scope.output = [];
+    $http.get("api/stocks/bottom")
             .then(function(response) {
-                $scope.stocks = response.data;
+              $scope.stocks = response.data;
               console.log($scope.stocks);
-            });   
-    });
+
+              $http.get("api/stocks/")
+                      .then(function (response1) {
+                        $scope.something = response1.data;
+                        console.log($scope.something);
+                        for (j=0; j<$scope.something.length; j++) {
+                          if ($scope.output.length === 20) {
+                            break;
+                          } else {
+                            var ticker = $scope.stocks[i].ticker;
+                            var temp = $scope.something[j].ticker;
+                            if (ticker.localeCompare(temp) === 0) {
+                              console.log($scope.stocks[0].currentprice);
+                              var fullName = $scope.something[j].fullName;
+                              var industry = $scope.something[j].industry;
+                              var currentprice = $scope.stocks[i].currentprice;
+                              var latestavgsentiment = $scope.stocks[i].latestavgsentiment;
+                              $scope.output.push({ticker, fullName,industry, currentprice, latestavgsentiment});
+                              console.log($scope.output);
+                              j = -1;
+                              i++;
+                            }
+                          }
+                        }
+                      })
+            });
+  });
 </script>
 </html>

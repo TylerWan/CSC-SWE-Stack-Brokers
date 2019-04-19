@@ -36,7 +36,7 @@
 
       
     </tr>
-    <tr ng-repeat="x in stocks">
+    <tr ng-repeat="x in output">
       <td>{{x.ticker}}</td>
       <td>{{x.fullName}}</td>
       <td>{{x.industry}}</td>
@@ -50,36 +50,41 @@
 </div>
 </body>
 <script>
-  var n = 0;
-  var m = 0;
-  var potato;
+  var i = 0;
+  var j;
  var app = angular.module('myApp', [])
     app.controller('myCtrl', function($scope, $http) {
-              $scope.combined = [];
-              $scope.stocks = [];
-              $scope.temp = [];
+                $scope.output = [];
                   $http.get("api/stocks/top")
                 .then(function(response) {
                     $scope.stocks = response.data;
-                    $scope.ticker = JSON.stringify($scope.stocks);
-                    for(i=0; i<20; i++) {
-                      n = $scope.ticker.indexOf('ticker', m);
-                      m = n+1;
-                      var x = $scope.ticker.substr(n+9, 5);
-                      for(p=0; p<5; p++){
-                        if(x[p] === '\"' || x[p] === ',')
-                          x = x.substr(0,p--);
-                      }
-                      console.log(x);
-                      $http.get("api/stocks/" + x)
-                              .then(function (response1) {
-                                $scope.something = response1.data;
-                                $scope.stocks = $scope.stocks.concat($scope.something);
-                                console.log($scope.stocks);
-                              });
-                    }
-               });
+                    console.log($scope.stocks);
 
+                    $http.get("api/stocks/")
+                            .then(function (response1) {
+                              $scope.something = response1.data;
+                              console.log($scope.something);
+                              for (j=0; j<$scope.something.length; j++) {
+                                if ($scope.output.length === 20) {
+                                  break;
+                                } else {
+                                  var ticker = $scope.stocks[i].ticker;
+                                  var temp = $scope.something[j].ticker;
+                                  if (ticker.localeCompare(temp) === 0) {
+                                    console.log($scope.stocks[0].currentprice);
+                                    var fullName = $scope.something[j].fullName;
+                                    var industry = $scope.something[j].industry;
+                                    var currentprice = $scope.stocks[i].currentprice;
+                                    var latestavgsentiment = $scope.stocks[i].latestavgsentiment;
+                                    $scope.output.push({ticker, fullName,industry, currentprice, latestavgsentiment});
+                                    console.log($scope.output);
+                                    j = -1;
+                                    i++;
+                                  }
+                                }
+                              }
+            })
+                });
         });   
 </script>
 
