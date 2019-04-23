@@ -39,7 +39,7 @@
         <td>{{x.ticker}}</td>
         <td>{{x.fullName}}</td>
         <td>{{x.industry}}</td>
-        <td>${{x.currentprice}}</td>
+        <td>${{x.currentprice.toFixed(2)}}</td>
         <td ng-if="x.hybrid < 0.02" class="text-danger">{{x.hybrid}}</td>
         <td ng-if="x.hybrid > 0.02" class="text-success">{{x.hybrid}}</td>
         <td ng-if="x.hybrid === 0.02">{{x.hybrid}}</td>
