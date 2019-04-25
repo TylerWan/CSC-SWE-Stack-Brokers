@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock Selling</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <style>
+        body
+        {
+            background-image: url('../stylesheets/background.png');
+            font-family: "Proxima Nova", "Calibri", serif;
+        }
+
+        .container
+        {
+            text-align: center;
+            background-color: #fff;
+            width: 1000px;
+            height: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .container-auto
+        {
+            text-align: center;
+            background-color: #fff;
+            width: 1000px;
+            height: auto;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        div.form
+        {
+            display: block;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        form
+        {
+            display: inline-block;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+        .topnav
+        {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="topnav">
+        <h1 id="pagename"></h1>
+        <a href="/"><button class="btn btn-primary">Home</button></a>
+        <button onclick="window.location.href = 'GoodStocks.html'"class="btn btn-success">Best Stocks</button>
+        <button onclick="window.location.href ='worstStock.html'"class="btn btn-danger">Worst Stocks</button>
+        <button onclick="PopStocksButton()" class="btn btn-info">Fantasy Stocks</button>
+        <button onclick="window.location.href = 'Industry.html'" class="btn btn-info">Browse Industries</button>
+    </div>
+<p id="pagebody"></p>
+
+
+
+</div>
+
+<br>
+<br>
+
+<script>
+    var getUrlParameter = function getUrlParameter(sParam) {
+        var sPageURL = window.location.search.substring(1),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+            }
+        }
+    };
+
+    let success = getUrlParameter('success');
+    let reason = getUrlParameter('reason');
+    let pagename = document.getElementById('pagename')
+    let pagebody = document.getElementById('pagebody')
+    console.log(success)
+    if(success==="true"){
+        pagename.innerText = "Success";
+    }else{
+        switch(reason){
+            case 'nostockfound':  pagename.innerText = "Error";
+            pagebody.innerText = "User does not own that stock.";
+            break;
+            case 'nofunds': pagename.innerText = "Error";
+            pagebody.innerText = "Not enough funds in account balance.";
+        }
+
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <title>Fantasy Stocks</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <style>
+        body
+        {
+            background-image: url('https://i.imgur.com/HtYeBd1.png');
+            font-family: "Proxima Nova", "Calibri", serif;
+        }
+
+        .container
+        {
+            text-align: center;
+            background-color: #fff;
+            width: 1000px;
+            height: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .container-auto
+        {
+            text-align: center;
+            background-color: #fff;
+            width: 1000px;
+            height: auto;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        div.form
+        {
+            display: block;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        form
+        {
+            display: inline-block;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+        .topnav
+        {
+            margin-bottom: 10px;
+        }
+        th{
+            text-align:center;
+        }
+        #userimg{
+            height:300px;
+            width:300px;
+            border-radius: 50%;
+            border: 3px solid darkorange;
+        }
+    </style>
+</head>
+<body>
+<div ng-app="myApp" ng-controller="myCtrl">
+<div class="container">
+    <div class="topnav">
+        <h1>{{user.name}}'s Page</h1>
+        <a href="/"><button class="btn btn-primary">Home</button></a>
+        <a href="/best"><button class="btn btn-success">Best Stocks</button></a>
+        <a href="/worst"><button class="btn btn-danger">Worst Stocks</button></a>
+        <a href="/fantasy"><button class="btn btn-info">Fantasy Stocks</button></a>
+        <a href="/industries"><button class="btn btn-info">Latest in Industries</button></a>
+    </div>
+    <div class="row">
+        <h2>User Summary</h2>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <img id="userimg" src="https://cdn.pixabay.com/photo/2012/04/18/00/07/silhouette-of-a-man-36181_960_720.png">
+        </div>
+        <div class="col-md-8" style="text-align:left">
+            <div class="row">
+                <h3>ID: {{user.id}}</h3>
+            </div>
+            <div class="row">
+                <h3>Name: {{user.name}}</h3>
+            </div>
+            <div class="row">
+                <h3>Balance: ${{user.wallet}}</h3>
+            </div>
+        </div>
+    </div>
+    <div clas="row">
+        <h2>Portfolio</h2>
+
+        <table class="table table-striped table-dark">
+            <thead>
+            <tr>
+                <th scope="col">Stock</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Industry</th>
+                <th scope="col">Price</th>
+                <th scope="col">Stock Health</th>
+            </tr>
+            </thead>
+            <tr ng-repeat="x in stocks">
+                <td><a href="/stock/{{x.ticker}}">{{x.fullname}}</a></td>
+                <td>{{x.amount}}</td>
+                <td>{{x.industry}}</td>
+                <td >${{x.currentprice}}</td>
+                <td ng-if="x.projection > 0.015" style="color:green">{{x.projection}}</td>
+                <td ng-if="x.projection < 0.015" style="color:red">{{x.projection}}</td>
+            </tr>
+        </table>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modalnostockfound" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Stock Selling Error</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    You do not own that stock.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="modalnofunds" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Stock Buying Error</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Not enough funds
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<script>
+    const uid = window.location.pathname.slice(6);
+
+    console.log(uid);
+    const app = angular.module('myApp', []);
+    app.controller('myCtrl', function($scope, $http) {
+        $scope.output = [];
+        $http.get("/api/users/"+uid)
+            .then(function(response) {
+
+                $scope.user = response.data;
+                $scope.stocks =[];
+                console.log(response.data)
+                for(let s in response.data.stocks){
+                    let thisstock = {};
+                    $http.get("/api/stocks/"+s)
+                        .then(function(response1) {
+                            thisstock.fullname = response1.data[0].fullName;
+                            thisstock.ticker = response1.data[0].ticker;
+                            thisstock.amount = response.data.stocks[s]
+                            thisstock.industry = response1.data[0].industry;
+                        });
+                    $http.get("/api/stocks/"+s+"/projection")
+                        .then(function(response2) {
+                            console.log(response2.data[0])
+                            thisstock.currentprice = response2.data[0].currentprice;
+                            thisstock.projection = response2.data[0].Hybrid.toFixed(4);
+                        });
+                    $scope.stocks.push(thisstock);
+                }
+
+            });
+    });
+    var getUrlParameter = function getUrlParameter(sParam) {
+        var sPageURL = window.location.search.substring(1),
+            sURLVariables = sPageURL.split('&'),
+            sParameterName,
+            i;
+
+        for (i = 0; i < sURLVariables.length; i++) {
+            sParameterName = sURLVariables[i].split('=');
+
+            if (sParameterName[0] === sParam) {
+                return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+            }
+        }
+    };
+
+    let success = getUrlParameter('success');
+    let reason = getUrlParameter('reason');
+    let pagename = document.getElementById('pagename')
+    let pagebody = document.getElementById('pagebody')
+    console.log(success)
+    if(success==="true"){
+        pagename.innerText = "Success";
+    }else{
+        switch(reason){
+            case 'nostockfound':
+                $('#modalnostockfound').modal('show')
+                break;
+            case 'nofunds': $('#modalnofunds').modal('show')
+        }
+
+    }
+</script>
+</body>
+
+</html>

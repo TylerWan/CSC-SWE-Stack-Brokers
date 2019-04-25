@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Buy Stock Form</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <style>
+        body
+        {
+            background-image: url('../stylesheets/background.png');
+            font-family: "Proxima Nova", "Calibri", serif;
+        }
+
+        .container
+        {
+            text-align: center;
+            background-color: #fff;
+            width: 1000px;
+            height: 1100px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .container-auto
+        {
+            text-align: center;
+            background-color: #fff;
+            width: 1000px;
+            height: auto;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        div.form
+        {
+            display: block;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        form
+        {
+            display: inline-block;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+        .topnav
+        {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="topnav">
+        <h1>Worst Stock Projections</h1>
+        <a href="/"><button class="btn btn-primary">Home</button></a>
+        <a href="/best"><button class="btn btn-success">Best Stocks</button></a>
+        <a href="/worst"><button class="btn btn-danger">Worst Stocks</button></a>
+        <a href="/fantasy"><button class="btn btn-info">Fantasy Stocks</button></a>
+        <a href="/industries"><button class="btn btn-info">Latest in Industries</button></a>
+    </div>
+
+
+
+    Fill out form to sell a stock<br>
+    <form method="post" action="/sell">
+        <input type="text" maxlength="10" name="phone" placeholder="Account Phone #"><br>
+        <input type="text" maxlength="5" name="passcode" placeholder="Account Code"><br>
+        <select name="ticker">
+            <option selected id="ticker"></option>
+        </select>
+
+        <input type="submit" value="Submit">
+    </form>
+</div>
+
+<br>
+<br>
+
+<script>
+    const ticker = window.location.pathname.slice(6);
+    document.getElementById('ticker').innerHTML='<option value="'+ticker+'">'+ticker+'</option>';
+    document.getElementById('ticker').value = ticker;
+    console.log(ticker)
+</script>
+</body>
+</html>

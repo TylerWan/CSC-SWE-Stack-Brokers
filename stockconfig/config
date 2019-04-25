@@ -3,5 +3,10 @@
   dbhost: 'localhost',
   dbport: '3306',
   dbuser: 'user',
-  dbpass: ''
+  dbpass: '',
+  //History API key
+  historykey: '',
+  //Twilio API keys
+  twiliokey: '',
+  twiliosid: ''
 }

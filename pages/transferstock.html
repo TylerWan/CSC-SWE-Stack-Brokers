@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Buy/Sell Stocks</title>
+</head>
+<body>
+Fill out form to buy a stock
+<form method="post" action="/buy">
+    <input type="text" maxlength="10" name="phone">
+    <input type="text" maxlength="5" name="passcode">
+    <select name="ticker">
+        <option value="AMZN">Amazon Inc.</option>
+        <option value="TSLA">Tesla Co.</option>
+        <option value="KO">Coca-Cola Company</option>
+    </select>
+    <input type="submit" value="Submit">
+</form>
+<br>
+<br>
+Fill out form to sell a stock
+<form method="post" action="/sell">
+    <input type="text" maxlength="10" name="phone">
+    <input type="text" maxlength="5" name="passcode">
+    <select name="ticker">
+        <option value="AMZN">Amazon Inc.</option>
+        <option value="TSLA">Tesla Co.</option>
+        <option value="KO">Coca-Cola Company</option>
+    </select>
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>

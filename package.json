@@ -1,21 +1,27 @@
 {
   "name": "awsstack",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
   },
   "dependencies": {
     "aws-sdk": "latest",
+    "chart.js": "^2.8.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "ejs": "latest",
     "express": "~4.16.0",
+    "google-news": "^1.4.6",
     "json5": "^2.1.0",
     "morgan": "~1.9.0",
     "mysql": "^2.16.0",
-    "node-cron": "^2.0.3",
+    "newsapi": "^2.4.0",
+    "node-gnews": "^1.0.3",
     "node-schedule": "^1.3.2",
-    "stock-info": "^1.1.0"
+    "sentiment": "^5.0.1",
+    "stock-data.js": "^1.2.2",
+    "stock-info": "^1.1.0",
+    "twilio": "^3.30.2"
   }
 }
