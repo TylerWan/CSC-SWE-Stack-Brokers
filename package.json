@@ -11,7 +11,7 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "ejs": "latest",
-    "express": "~4.16.0",
+    "express": "~4.18.2",
     "google-news": "^1.4.6",
     "json5": "^2.1.0",
     "morgan": "~1.9.0",
