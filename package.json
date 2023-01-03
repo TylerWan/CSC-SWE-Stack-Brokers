@@ -13,7 +13,7 @@
     "ejs": "latest",
     "express": "~4.16.0",
     "google-news": "^1.4.6",
-    "json5": "^2.1.0",
+    "json5": "^2.2.2",
     "morgan": "~1.9.0",
     "mysql": "^2.16.0",
     "newsapi": "^2.4.0",
